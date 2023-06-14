@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MvcStartApp.Models;
 using MvcStartApp.Models.Db;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace MvcStartApp.Controllers
 {
@@ -41,6 +43,12 @@ namespace MvcStartApp.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Authors()
+        {
+            var authors = await _repo.GetUsers();
+            return View(authors);
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -49,7 +57,7 @@ namespace MvcStartApp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return base.View(new Models.ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
